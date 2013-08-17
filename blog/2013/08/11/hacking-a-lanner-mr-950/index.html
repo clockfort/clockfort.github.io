@@ -1,0 +1,390 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Hacking a Lanner MR-950 - Clockfort's Tech Blog</title>
+  <meta name="author" content="Chris Lockfort">
+
+  
+  <meta name="description" content="I recently bought a Lanner MR-950 &ldquo;Octeon Powered Security Appliance&rdquo; for super-cheaps off of ebay. It&rsquo;s a 16-core MIPS64 SoC with &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://clockfort.github.io/blog/2013/08/11/hacking-a-lanner-mr-950">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Clockfort's Tech Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-5798460-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Clockfort's Tech Blog</a></h1>
+  
+    <h2>A website you somehow Googled into looking to solve esoteric hardware problems</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:clockfort.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Hacking a Lanner MR-950</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-11T11:36:00-07:00" pubdate data-updated="true">Aug 11<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I recently bought a Lanner MR-950 &ldquo;Octeon Powered Security Appliance&rdquo; for super-cheaps off of ebay. It&rsquo;s a 16-core MIPS64 SoC with 10x 1-gig copper ports, DDR2 modules, dual redundant PSUs, etc.  (<a href="http://www.quantum.com.pl/baza/pdf/5f0ca0cc39ca9a492838d80453fc034ba5936ba3.pdf">Basic Datasheet</a>)</p>
+
+<p>After consulting some chipset documentation to see what was supported, I also bought from eBay to populate the board 2x2GB DDR2-667 PC2-5300 ECC Registered DIMMs, and a 16GB compact flash card from someone on ebay kind enough to list read/write IOPS for their products :&ndash;)</p>
+
+<p>Some excited pictures from receiving the item!
+<img class="center" src="//blog.clockfort.com/images/posts/lanner_mr950.jpg" title="Lanner MR-950 on my couch" >
+<img class="center" src="//blog.clockfort.com/images/posts/lanner_mr950_guts.jpg" title="Lanner MR-950's guts" ></p>
+
+<p>&hellip; the dent in the LED panel above isn&rsquo;t an artifact of my wide-angle camera lens, this little guy has seen some action. With that done, now onto making him boot Linux.</p>
+
+<p>I have some friends who work for / own a company that makes a neat custom <a href="https://www.exablox.com/products/">NAS solution on top of Cavium Octeon II SoCs</a>, and I happen to know that their boxes default to 115200bps serial for debugging, rather than the relatively industry-standard 9600/8/n/1. Sure enough, after this informed lucky guess on serial settings, after turning the box on (and finding the switch to turn off an ear-piercing alarm that I somehow triggered by booting the box), text started streaming in over my janky USB→DB9 Serial→Cisco rollover→RJ45→RJ45/DB9 console adapter setup.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>\0x00
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>U-Boot 1.1.1 (Development build) (Build time: Mar 15 2007
+</span><span class='line'> - 03:44:07)
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>WARNING:
+</span><span class='line'>WARNING: Measured DDR clock mismatch! expected: 266 MHz, measured: 196 MHz, cpu clock: 499 MHz
+</span><span class='line'>WARNING: Using measured clock for configuration.
+</span><span class='line'>WARNING:
+</span><span class='line'>
+</span><span class='line'>Warning: Clock descriptor tuple not found in eeprom, using defaults
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>WARNING: memory configured for 196 mhz clock.
+</span><span class='line'>If this is not the actual memory clock
+</span><span class='line'>poor performance and memory instability may result.
+</span><span class='line'>The memory speed must be specified in the board eeprom
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Warning: Board descriptor tuple not found in eeprom, using defaults
+</span><span class='line'>EBT3000 board revision major:1, minor:0, serial #: unknown
+</span><span class='line'>OCTEON CN38XX-NSP revision: 3(pass 4), Core clock: 499 MHz, DDR clock: 196 MHz (392 Mhz data rate)
+</span><span class='line'>
+</span><span class='line'>Unsupported SDRAM Width, 4.  Must be 8 or 16.
+</span><span class='line'>hanging...
+</span><span class='line'>##
+</span><span class='line'># ERROR ### Please RESET the board ###
+</span><span class='line'>
+</span><span class='line'>~\0x00
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Darn. I unfortunately understand this message, and it means I need to both:</p>
+
+<ul>
+<li>Somehow find and buy 240pin DDR2 DIMMs that are registered, ECC, 2GB or less, AND meet the new apparent requirement of also being &ldquo;low density&rdquo; (aka having a larger number of low-density chips rather than high-density ones, which will be accessed over a large data width). This will probably be difficult to find.</li>
+<li>Either buy slower RAM (I don&rsquo;t want to do that!) or figure out how the ram speed is stored/encoded in the EEPROM and change it.</li>
+</ul>
+
+
+<p>Whelp. At least old DDR2 server ram is very cheap used, albeit it will be very difficult to find the particular combination of features I need (used RAM sellers aren&rsquo;t usually forthcoming about the exact chip configuration of their DIMMs&hellip;).</p>
+
+<p>Stay tuned! I&rsquo;ll be back in around a week and a half, hopefully with much better news, after receiving some new RAM.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Chris Lockfort</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-11T11:36:00-07:00" pubdate data-updated="true">Aug 11<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/hacking/'>hacking</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/porting/'>porting</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://clockfort.github.io/blog/2013/08/11/hacking-a-lanner-mr-950/" data-via="clockfort" data-counturl="http://clockfort.github.io/blog/2013/08/11/hacking-a-lanner-mr-950/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/08/11/new-blog/" title="Previous Post: New blog!">&laquo; New blog!</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/08/11/sdk-troubles/" title="Next Post: SDK Troubles">SDK Troubles &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/08/16/making-a-custom-linux-build/">Making a Custom Linux Build</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/15/picky-hardware/">Picky Software to Go With Picky Hardware</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/13/ram-success/">Ram Success!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/11/sdk-troubles/">SDK Troubles</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/11/hacking-a-lanner-mr-950/">Hacking a Lanner MR-950</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/clockfort">@clockfort</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'clockfort',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/clockfort?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Chris Lockfort -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'clockfort-blog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://clockfort.github.io/blog/2013/08/11/hacking-a-lanner-mr-950/';
+        var disqus_url = 'http://clockfort.github.io/blog/2013/08/11/hacking-a-lanner-mr-950/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,114 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
 
-<!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <title>Clockfort's Tech Blog</title>
-  <meta name="author" content="Chris Lockfort">
-
-  
-  <meta name="description" content="I&rsquo;m borrowing the OpenWRT project&rsquo;s surprisingly easy to use cross-compilation toolchain to make a custom 3.10 Linux kernel, ramdisk, and &hellip;">
-  
-
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  
-  <link rel="canonical" href="http://clockfort.github.io">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Clockfort's Tech Blog" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
-  
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-5798460-1']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
-
-
-</head>
-
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Clockfort's Tech Blog</a></h1>
-  
-    <h2>A website you somehow Googled into looking to solve esoteric hardware problems</h2>
-  
-</hgroup>
-
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="q" value="site:clockfort.github.io" />
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-</ul>
-
-</nav>
-  <div id="main">
-    <div id="content">
-      <div class="blog-index">
-  
-  
-  
-    <article>
-      
-  <header>
+  <title><![CDATA[Clockfort's Tech Blog]]></title>
+  <link href="http://clockfort.github.io/atom.xml" rel="self"/>
+  <link href="http://clockfort.github.io/"/>
+  <updated>2013-08-17T01:08:34-07:00</updated>
+  <id>http://clockfort.github.io/</id>
+  <author>
+    <name><![CDATA[Chris Lockfort]]></name>
     
-      <h1 class="entry-title"><a href="/blog/2013/08/16/making-a-custom-linux-build/">Making a Custom Linux Build</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
 
   
-
-
-<time datetime="2013-08-16T15:33:00-07:00" pubdate data-updated="true">Aug 16<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/08/16/making-a-custom-linux-build/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&rsquo;m borrowing the OpenWRT project&rsquo;s surprisingly easy to use cross-compilation toolchain to make a custom 3.10 Linux kernel, ramdisk, and root image for this device. The end result isn&rsquo;t going to look anything like OpenWRT, though, more like a cross-Linux-from-Scratch install, since my needs are very different than normal OpenWRT uses (I am not limited to a horrid platform with ~16MB of flash, ~8MB of RAM, a single slow ARM CPU; I have GB/TB of disks, 4GB of RAM, 16 CPUs&hellip; and a weird architecture) so it&rsquo;s pretty much me having to cross-compile and build a root filesystem disk image of an entire standard linux distro from source for a fairly rare MIPS platform.</p>
+  <entry>
+    <title type="html"><![CDATA[Making a Custom Linux Build]]></title>
+    <link href="http://clockfort.github.io/blog/2013/08/16/making-a-custom-linux-build/"/>
+    <updated>2013-08-16T15:33:00-07:00</updated>
+    <id>http://clockfort.github.io/blog/2013/08/16/making-a-custom-linux-build</id>
+    <content type="html"><![CDATA[<p>I&rsquo;m borrowing the OpenWRT project&rsquo;s surprisingly easy to use cross-compilation toolchain to make a custom 3.10 Linux kernel, ramdisk, and root image for this device. The end result isn&rsquo;t going to look anything like OpenWRT, though, more like a cross-Linux-from-Scratch install, since my needs are very different than normal OpenWRT uses (I am not limited to a horrid platform with ~16MB of flash, ~8MB of RAM, a single slow ARM CPU; I have GB/TB of disks, 4GB of RAM, 16 CPUs&hellip; and a weird architecture) so it&rsquo;s pretty much me having to cross-compile and build a root filesystem disk image of an entire standard linux distro from source for a fairly rare MIPS platform.</p>
 
 <p>There are a lot of pains about this &ndash; kernel config is a little weird for this platform, and I found a few places that won&rsquo;t work (or even compile) for MIPS/Octeon platform. The kernel itself is easy, though, compared to building out a good-sized userspace for this platform. Some applications have x86/ARM/etc specific code and can&rsquo;t compile for MIPS; some applications have bad building dependency graphs and can&rsquo;t be built in parallel; other applications would work fine on MIPS, and compile reliably in parallel, but their trunk builds are currently broken for one reason or another. Or others use outdated kernel interfaces and can&rsquo;t build against 3.10 kernels.</p>
 
@@ -227,44 +137,15 @@ Good news is, though, the PCI bus works perfectly, and it even loaded a network 
 <p>Bad news is, besides the kernel oops from the USB implementation, is that while all 16 CPUs were detected properly (unlike OpenBSD), the heirarchical RCU (currently the default) I configured forced NUM_CPUS back down to 1 from 16. Oh well, easy enough to switch it to classic.</p>
 
 <p>Anyways, we were running Linux on this Cavium Octeon based Lanner MR-950 for an entire 356 milliseconds, so I&rsquo;d call that a win.</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/15/picky-hardware/">Picky Software to Go With Picky Hardware</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-15T17:46:00-07:00" pubdate data-updated="true">Aug 15<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/08/15/picky-hardware/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Good news! Grabbed a snapshot kernel build from OpenBSD&rsquo;s trunk (currently only the development version, 5.4, has the beginnings of support for any Cavium SoCs at all) and managed to TFTPboot into that kernel and a small ramdisk.
+  <entry>
+    <title type="html"><![CDATA[Picky Software to go with Picky Hardware]]></title>
+    <link href="http://clockfort.github.io/blog/2013/08/15/picky-hardware/"/>
+    <updated>2013-08-15T17:46:00-07:00</updated>
+    <id>http://clockfort.github.io/blog/2013/08/15/picky-hardware</id>
+    <content type="html"><![CDATA[<p>Good news! Grabbed a snapshot kernel build from OpenBSD&rsquo;s trunk (currently only the development version, 5.4, has the beginnings of support for any Cavium SoCs at all) and managed to TFTPboot into that kernel and a small ramdisk.
 I did have some problems; everyone on the internet seems to say that telling u-boot&rsquo;s TFTP client to download to memory address 0 is a sort of auto-find-an-address-that-won&rsquo;t-stomp-on-uboot&rsquo;s-own-memory, but this was not the case for me. Manually inserting an ELF binary (in this case, kernel + small ramdisk) at 0x21000000 and booting it with the ELF-binary loader (<code>bootoctlinux</code>) did work though. (I got the 0x21000000 address from whoever owned this board last, as there were some macros left in the preboot environment using that address)</p>
 
 <p>&hellip; that&rsquo;s where the fun stops though.</p>
@@ -346,44 +227,15 @@ I did have some problems; everyone on the internet seems to say that telling u-b
 
 
 
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/13/ram-success/">Ram Success!</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-13T20:23:00-07:00" pubdate data-updated="true">Aug 13<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/08/13/ram-success/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Whoo! Got one of the two hard-to-find rare RAM sticks today (they shipped from different warehouses that each only had one stick left!). Stuck it in DIMM slot 0 (marked by &ldquo;J1&rdquo; on the PCB silkscreen) (the SoC apparently will not boot with memory only in DIMM1 slot) and everything worked great! The other 2GB (matched!) stick comes tomorrow.</p>
+  <entry>
+    <title type="html"><![CDATA[Ram Success!]]></title>
+    <link href="http://clockfort.github.io/blog/2013/08/13/ram-success/"/>
+    <updated>2013-08-13T20:23:00-07:00</updated>
+    <id>http://clockfort.github.io/blog/2013/08/13/ram-success</id>
+    <content type="html"><![CDATA[<p>Whoo! Got one of the two hard-to-find rare RAM sticks today (they shipped from different warehouses that each only had one stick left!). Stuck it in DIMM slot 0 (marked by &ldquo;J1&rdquo; on the PCB silkscreen) (the SoC apparently will not boot with memory only in DIMM1 slot) and everything worked great! The other 2GB (matched!) stick comes tomorrow.</p>
 
 <p>Sure enough all that I needed was a slightly different chip configuration of RAM; this RAM is 8-bit wide rather than the previous easier to find ram with 4-bit width (higher density chip rank configuration).</p>
 
@@ -663,90 +515,32 @@ I did have some problems; everyone on the internet seems to say that telling u-b
 <p>Bonus! Looks like the firmware shell is working fine, and it detects my compact flash card fine, so that should work well as an eventual boot media. Until then, I&rsquo;ll probably have to TFTP boot from one of the 8 gig network ports available in this pre-boot environment :&ndash;)</p>
 
 <p>Next step: the hard parts! Creating a bootable disk image that u-boot can understand, and a usable *nix system root partition to live in.</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/11/sdk-troubles/">SDK Troubles</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-11T22:50:00-07:00" pubdate data-updated="true">Aug 11<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/08/11/sdk-troubles/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Cavium apparently requires you to buy an expensive hardware development kit in order to get access to their SDK, which provides a simulator / base linux image / compiler for their platform. Bummer. After a while of digging though, a helpful wiki page from the FreeBSD MIPS team indicated that one may also petition to join a fairly closed-door community called <a href="http://cnusers.org/">cnUsers</a>, where approved members are allowed access to a pretty crippled occasionally released copy of the Cavium SDK. However, it does not offer advanced crypto/compression library support, and more importantly does not include the simulator/base linux image. 😢</p>
+  <entry>
+    <title type="html"><![CDATA[SDK Troubles]]></title>
+    <link href="http://clockfort.github.io/blog/2013/08/11/sdk-troubles/"/>
+    <updated>2013-08-11T22:50:00-07:00</updated>
+    <id>http://clockfort.github.io/blog/2013/08/11/sdk-troubles</id>
+    <content type="html"><![CDATA[<p>Cavium apparently requires you to buy an expensive hardware development kit in order to get access to their SDK, which provides a simulator / base linux image / compiler for their platform. Bummer. After a while of digging though, a helpful wiki page from the FreeBSD MIPS team indicated that one may also petition to join a fairly closed-door community called <a href="http://cnusers.org/">cnUsers</a>, where approved members are allowed access to a pretty crippled occasionally released copy of the Cavium SDK. However, it does not offer advanced crypto/compression library support, and more importantly does not include the simulator/base linux image. 😢</p>
 
 <p>Regardless, I have applied, and eagerly await evaluating what help, if any, the open source SDK will be in any porting efforts.</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/11/hacking-a-lanner-mr-950/">Hacking a Lanner MR-950</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-11T11:36:00-07:00" pubdate data-updated="true">Aug 11<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/08/11/hacking-a-lanner-mr-950/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I recently bought a Lanner MR-950 &ldquo;Octeon Powered Security Appliance&rdquo; for super-cheaps off of ebay. It&rsquo;s a 16-core MIPS64 SoC with 10x 1-gig copper ports, DDR2 modules, dual redundant PSUs, etc.  (<a href="http://www.quantum.com.pl/baza/pdf/5f0ca0cc39ca9a492838d80453fc034ba5936ba3.pdf">Basic Datasheet</a>)</p>
+  <entry>
+    <title type="html"><![CDATA[Hacking a Lanner MR-950]]></title>
+    <link href="http://clockfort.github.io/blog/2013/08/11/hacking-a-lanner-mr-950/"/>
+    <updated>2013-08-11T11:36:00-07:00</updated>
+    <id>http://clockfort.github.io/blog/2013/08/11/hacking-a-lanner-mr-950</id>
+    <content type="html"><![CDATA[<p>I recently bought a Lanner MR-950 &ldquo;Octeon Powered Security Appliance&rdquo; for super-cheaps off of ebay. It&rsquo;s a 16-core MIPS64 SoC with 10x 1-gig copper ports, DDR2 modules, dual redundant PSUs, etc.  (<a href="http://www.quantum.com.pl/baza/pdf/5f0ca0cc39ca9a492838d80453fc034ba5936ba3.pdf">Basic Datasheet</a>)</p>
 
 <p>After consulting some chipset documentation to see what was supported, I also bought from eBay to populate the board 2x2GB DDR2-667 PC2-5300 ECC Registered DIMMs, and a 16GB compact flash card from someone on ebay kind enough to list read/write IOPS for their products :&ndash;)</p>
 
 <p>Some excited pictures from receiving the item!
-<img class="center" src="//blog.clockfort.com/images/posts/lanner_mr950.jpg" title="Lanner MR-950 on my couch" >
-<img class="center" src="//blog.clockfort.com/images/posts/lanner_mr950_guts.jpg" title="Lanner MR-950's guts" ></p>
+<img class="center" src="http://clockfort.github.io//blog.clockfort.com/images/posts/lanner_mr950.jpg" title="Lanner MR-950 on my couch" >
+<img class="center" src="http://clockfort.github.io//blog.clockfort.com/images/posts/lanner_mr950_guts.jpg" title="Lanner MR-950's guts" ></p>
 
 <p>&hellip; the dent in the LED panel above isn&rsquo;t an artifact of my wide-angle camera lens, this little guy has seen some action. With that done, now onto making him boot Linux.</p>
 
@@ -828,181 +622,16 @@ I did have some problems; everyone on the internet seems to say that telling u-b
 <p>Whelp. At least old DDR2 server ram is very cheap used, albeit it will be very difficult to find the particular combination of features I need (used RAM sellers aren&rsquo;t usually forthcoming about the exact chip configuration of their DIMMs&hellip;).</p>
 
 <p>Stay tuned! I&rsquo;ll be back in around a week and a half, hopefully with much better news, after receiving some new RAM.</p>
-</div>
+]]></content>
+  </entry>
   
+  <entry>
+    <title type="html"><![CDATA[New blog!]]></title>
+    <link href="http://clockfort.github.io/blog/2013/08/11/new-blog/"/>
+    <updated>2013-08-11T11:00:00-07:00</updated>
+    <id>http://clockfort.github.io/blog/2013/08/11/new-blog</id>
+    <content type="html"><![CDATA[<p>I may eventually port some posts over from the old site. Eventually. It may end up being too much busy work.</p>
+]]></content>
+  </entry>
   
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/11/new-blog/">New Blog!</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-11T11:00:00-07:00" pubdate data-updated="true">Aug 11<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/08/11/new-blog/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I may eventually port some posts over from the old site. Eventually. It may end up being too much busy work.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
-<aside class="sidebar">
-  
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2013/08/16/making-a-custom-linux-build/">Making a Custom Linux Build</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/15/picky-hardware/">Picky Software to Go With Picky Hardware</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/13/ram-success/">Ram Success!</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/11/sdk-troubles/">SDK Troubles</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/11/hacking-a-lanner-mr-950/">Hacking a Lanner MR-950</a>
-      </li>
-    
-  </ul>
-</section>
-
-<section>
-  <h1>GitHub Repos</h1>
-  <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
-  </ul>
-  
-  <a href="https://github.com/clockfort">@clockfort</a> on GitHub
-  
-  <script type="text/javascript">
-    $(document).ready(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
-        }
-
-        github.showRepos({
-            user: 'clockfort',
-            count: 5,
-            skip_forks: true,
-            target: '#gh_repos'
-        });
-    });
-  </script>
-  <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
-
-
-
-<section class="googleplus">
-  <h1>
-    <a href="https://plus.google.com/clockfort?rel=author">
-      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
-      Google+
-    </a>
-  </h1>
-</section>
-
-
-
-  
-</aside>
-
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - Chris Lockfort -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
-
-</footer>
-  
-
-<script type="text/javascript">
-      var disqus_shortname = 'clockfort-blog';
-      
-        
-        var disqus_script = 'count.js';
-      
-    (function () {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    }());
-</script>
-
-
-
-
-
-  <script type="text/javascript">
-    (function() {
-      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
-      script.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
-    })();
-  </script>
-
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = '//platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
-
-
-
-
-
-</body>
-</html>
+</feed>

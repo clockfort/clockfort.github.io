@@ -1,0 +1,384 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Picky Software to go with Picky Hardware - Clockfort's Tech Blog</title>
+  <meta name="author" content="Chris Lockfort">
+
+  
+  <meta name="description" content="Good news! Grabbed a snapshot kernel build from OpenBSD&rsquo;s trunk (currently only the development version, 5.4, has the beginnings of support for &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://clockfort.github.io/blog/2013/08/15/picky-hardware">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Clockfort's Tech Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-5798460-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Clockfort's Tech Blog</a></h1>
+  
+    <h2>A website you somehow Googled into looking to solve esoteric hardware problems</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:clockfort.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Picky Software to Go With Picky Hardware</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-15T17:46:00-07:00" pubdate data-updated="true">Aug 15<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Good news! Grabbed a snapshot kernel build from OpenBSD&rsquo;s trunk (currently only the development version, 5.4, has the beginnings of support for any Cavium SoCs at all) and managed to TFTPboot into that kernel and a small ramdisk.
+I did have some problems; everyone on the internet seems to say that telling u-boot&rsquo;s TFTP client to download to memory address 0 is a sort of auto-find-an-address-that-won&rsquo;t-stomp-on-uboot&rsquo;s-own-memory, but this was not the case for me. Manually inserting an ELF binary (in this case, kernel + small ramdisk) at 0x21000000 and booting it with the ELF-binary loader (<code>bootoctlinux</code>) did work though. (I got the 0x21000000 address from whoever owned this board last, as there were some macros left in the preboot environment using that address)</p>
+
+<p>&hellip; that&rsquo;s where the fun stops though.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>octcf0 at iobus0 base 0x1d000800 irq 0: Doesn&#39;t support 8bit card
+</span><span class='line'>: card not present
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(from OpenBSD/src/sys/arch/octeon/dev/octcf.c:)</p>
+
+<figure class='code'><figcaption><span>OpenBSD/src/sys/arch/octeon/dev/octcf.c</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kt">uint64_t</span> <span class="n">cfg</span> <span class="o">=</span>
+</span><span class='line'>  <span class="o">*</span><span class="p">(</span><span class="kt">uint64_t</span> <span class="o">*</span><span class="p">)</span><span class="n">PHYS_TO_XKPHYS</span><span class="p">(</span>
+</span><span class='line'>      <span class="n">OCTEON_MIO_BOOT_BASE</span> <span class="o">+</span> <span class="n">MIO_BOOT_REG_CFG</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">CCA_NC</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">((</span><span class="n">cfg</span> <span class="o">&amp;</span> <span class="n">BOOT_CFG_BASE_MASK</span><span class="p">)</span> <span class="o">==</span>
+</span><span class='line'>      <span class="p">(</span><span class="n">OCTEON_CF_BASE</span> <span class="o">&gt;&gt;</span> <span class="n">BOOT_CFG_BASE_SHIFT</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="n">cfg</span> <span class="o">&amp;</span> <span class="n">BOOT_CFG_WIDTH_MASK</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">printf</span><span class="p">(</span><span class="s">&quot;: Doesn&#39;t support 8bit card</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+</span><span class='line'>              <span class="n">wd</span><span class="o">-&gt;</span><span class="n">sc_dev</span><span class="p">.</span><span class="n">dv_xname</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ARGH. The hardware can do it, but OpenBSD is so damn picky about what it will take. USB didn&rsquo;t come up on boot either, and neither did the SATA controller, and neither did the network, so my options of what to boot from are basically using u-boot to manually load ramdisks into ram and booting them&hellip; or nothing.</p>
+
+<p>Also bad:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>cpu0 at mainbus0: Unknown CPU type (0x0) rev 0.3 499 MHz, Software FP emulation
+</span><span class='line'>vendor &quot;Cavium&quot;, unknown product 0x0005 (class processor subclass MIPS, rev 0x03) at pci0 dev 0 function 0 not configured
+</span><span class='line'>unsupported octeon model: 0xd0003
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The OpenBSD kernel doesn&rsquo;t know what this processor is :&ndash;(  Also as a result it&rsquo;s using only two cores, and is software-emulating floating point instructions, since it doesn&rsquo;t know how to interact with the hardware.</p>
+
+<p>Not the worst, mostly just annoying:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>0:0:0: mem address conflict 0x11000000/0x1000
+</span><span class='line'>
+</span><span class='line'>0:0:0: mem address conflict 0x18000000/0x8000000
+</span><span class='line'>
+</span><span class='line'>0:5:0: bridge mem address conflict 0x21000000/0x300000
+</span><span class='line'>
+</span><span class='line'>0:5:0: bridge mem address conflict 0x10000000/0x100000
+</span><span class='line'>
+</span><span class='line'>WARNING: No TOD clock, believing file system.
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Chris Lockfort</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-15T17:46:00-07:00" pubdate data-updated="true">Aug 15<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/openbsd/'>OpenBSD</a>, <a class='category' href='/blog/categories/hacking/'>hacking</a>, <a class='category' href='/blog/categories/hardware/'>hardware</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://clockfort.github.io/blog/2013/08/15/picky-hardware/" data-via="clockfort" data-counturl="http://clockfort.github.io/blog/2013/08/15/picky-hardware/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/08/13/ram-success/" title="Previous Post: Ram Success!">&laquo; Ram Success!</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/08/16/making-a-custom-linux-build/" title="Next Post: Making a Custom Linux Build">Making a Custom Linux Build &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/08/16/making-a-custom-linux-build/">Making a Custom Linux Build</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/15/picky-hardware/">Picky Software to Go With Picky Hardware</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/13/ram-success/">Ram Success!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/11/sdk-troubles/">SDK Troubles</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/11/hacking-a-lanner-mr-950/">Hacking a Lanner MR-950</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/clockfort">@clockfort</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'clockfort',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/clockfort?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Chris Lockfort -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'clockfort-blog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://clockfort.github.io/blog/2013/08/15/picky-hardware/';
+        var disqus_url = 'http://clockfort.github.io/blog/2013/08/15/picky-hardware/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

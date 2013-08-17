@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: porting | Clockfort's Tech Blog]]></title>
+  <link href="http://clockfort.github.io/blog/categories/porting/atom.xml" rel="self"/>
+  <link href="http://clockfort.github.io/"/>
+  <updated>2013-08-17T01:08:34-07:00</updated>
+  <id>http://clockfort.github.io/</id>
+  <author>
+    <name><![CDATA[Chris Lockfort]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ram Success!]]></title>
+    <link href="http://clockfort.github.io/blog/2013/08/13/ram-success/"/>
+    <updated>2013-08-13T20:23:00-07:00</updated>
+    <id>http://clockfort.github.io/blog/2013/08/13/ram-success</id>
+    <content type="html"><![CDATA[<p>Whoo! Got one of the two hard-to-find rare RAM sticks today (they shipped from different warehouses that each only had one stick left!). Stuck it in DIMM slot 0 (marked by &ldquo;J1&rdquo; on the PCB silkscreen) (the SoC apparently will not boot with memory only in DIMM1 slot) and everything worked great! The other 2GB (matched!) stick comes tomorrow.</p>
+
+<p>Sure enough all that I needed was a slightly different chip configuration of RAM; this RAM is 8-bit wide rather than the previous easier to find ram with 4-bit width (higher density chip rank configuration).</p>
+
+<p>``` text
+\0x00
+\0x00</p>
+
+<p>U-Boot 1.1.1 (Development build) (Build time: Mar 15 2007 &ndash; 03:44:07)</p>
+
+<p>WARNING:
+WARNING: Measured DDR clock mismatch! expected: 266 MHz, measured: 196 MHz, cpu clock: 499 MHz
+WARNING: Using measured clock for configuration.
+WARNING:</p>
+
+<p>Warning: Clock descriptor tuple not found in eeprom, using defaults</p>
+
+<p>WARNING: memory configured for 196 mhz clock.<br/>
+If this is not the actual memory clock
+poor performance and memory instability may result.<br/>
+The memory speed must be specified in the board eeprom</p>
+
+<p>Warning: Board descriptor tuple not found in eeprom, using defaults
+EBT3000 board revision major:1, minor:0, serial #: unknown
+OCTEON CN38XX-NSP revision: 3(pass 4), Core clock: 499 MHz, DDR clock: 196 MHz (392 Mhz data rate)</p>
+
+<p>DRAM:  2048 MB</p>
+
+<p>Flash: 16 MB
+Clearing DRAM&hellip;..
+.
+.
+.
+done
+BIST check passed.
+Starting PCI
+PCI Status: PCI-X 64-bit
+PCI BAR 1: Memory 0x80080000  PCI 0x18000000
+Net:   octeth0, octeth1, octeth2, octeth3, octeth4, octeth5, octeth6, octeth7
+Bus 0:
+OK</p>
+
+<p>  Device 0: Model: STEC M4 CF Firm: E6236-2 Ser#: STM000105607</p>
+
+<pre><code>        Type: Hard Disk
+        Capacity: 14840.9 MB = 14.4 GB (30394224 x 512)
+</code></pre>
+
+<p>Octeon ebt3000#
+help</p>
+
+<p>?       &ndash; alias for &lsquo;help&rsquo;
+askenv  &ndash; get environment variables from stdin
+autoscr &ndash; run script from memory
+base    &ndash; print or set address offset
+bootelf &ndash; Boot from an ELF image in memory
+bootoct &ndash; Boot from an Octeon Executive ELF image in memory
+bootoctelf &ndash; Boot a generic ELF image in memory. NOTE: This command does not support</p>
+
+<pre><code>         simple executive applications, use bootoct for those.
+</code></pre>
+
+<p>bootoctlinux &ndash; Boot from a linux ELF image in memory
+bootp   &ndash; boot image via network using BootP/TFTP protocol
+cmp     &ndash; memory compare
+coninfo &ndash; print console devices and informations
+cp      &ndash; memory copy
+crc32   &ndash; checksum calculation
+dhcp    &ndash; invoke DHCP client to obtain IP/boot params
+echo    &ndash; echo args to console
+eeprom  &ndash; EEPROM sub-system
+erase   &ndash; erase FLASH memory
+fatinfo &ndash; print information about filesystem
+fatload &ndash; load binary file from a dos filesystem
+fatloadalloc &ndash; load binary file from a dos filesystem, and allocate</p>
+
+<pre><code>      a named bootmem block for file data
+</code></pre>
+
+<p>fatls   &ndash; list files in a directory (default /)
+flinfo  &ndash; print FLASH memory information
+go      &ndash; start application at address &lsquo;addr&rsquo;
+gunzip  &ndash; Uncompress an in memory gzipped file
+help    &ndash; print online help
+ide     &ndash; IDE sub-system
+initflash &ndash; init flash when boot from Netrom
+itest\0x09 &ndash; return true/false on integer compare
+loadb   &ndash; load binary file over serial line (kermit mode)
+loop    &ndash; infinite loop on address range
+md      &ndash; memory display
+mii     &ndash; MII utility commands
+mm      &ndash; memory modify (auto-incrementing)
+mtest   &ndash; simple RAM test
+mw      &ndash; memory write (fill)
+namedalloc    &ndash; Allocate a named bootmem block
+namedfree    &ndash; Free a named bootmem block
+namedprint    &ndash; Print list of named bootmem blocks
+nm      &ndash; memory modify (constant address)
+pci     &ndash; list and access PCI Configuraton Space
+ping    &ndash; send ICMP ECHO_REQUEST to network host
+printenv- print environment variables
+protect &ndash; enable or disable FLASH write protection
+rarpboot- boot image via network using RARP/TFTP protocol
+read64    &ndash; read 64 bit word from 64 bit address
+read64b    &ndash; read 8 bit word from 64 bit address
+read_cmp    &ndash; read and compare memory to val
+reset   &ndash; Perform RESET of the CPU
+run     &ndash; run commands in an environment variable
+saveenv &ndash; save environment variables to persistent storage
+setenv  &ndash; set environment variables
+sleep   &ndash; delay execution for some time
+tftpboot- boot image via network using TFTP protocol
+tlv_eeprom  &ndash; EEPROM data parsing for ebt3000 board
+version &ndash; print monitor version
+write64    &ndash; write 64 bit word to 64 bit address
+write64b    &ndash; write 8 bit word to 64 bit address
+Octeon ebt3000#
+printenv</p>
+
+<p>bootdelay=0
+baudrate=115200
+download_baudrate=115200
+bootloader_flash_update_failsafe=protect off 0xbec00000 0xbec3FFFF;erase 0xbec00000 0xbec3FFFF;cp.b 0x100000 0xbec00000 0x40000
+bootloader_flash_update=protect off 0xbec40000 0xbec7ffff;erase 0xbec40000 0xbec7ffff;cp.b 0x100000 0xbec40000 0x40000
+linux_cf=fatload ide 0 21000000 vmlinux.64;bootoctlinux 21000000
+burn_app=erase bf480000 +$(filesize);cp.b 100000 bf480000 $(filesize)
+ls=fatls ide 0
+bf=bootoct bf480000 forceboot numcores=$(numcores)
+nuke_env=protect off BFBFE000 BFBFffff; erase BFBFE000 BFBFffff
+autoload=n
+octethethact=octeth0
+ipaddr=172.21.44.136
+turbo=tftpboot 0x21000000 turbo; bootoct 0x21000000 coremask=ffff
+serverip=172.21.44.134
+ethact=octeth4
+numcores=16
+stdin=serial
+stdout=serial
+stderr=serial</p>
+
+<p>Environment size: 775/131068 bytes
+Octeon ebt3000#
+```</p>
+
+<p>Bonus! Looks like the firmware shell is working fine, and it detects my compact flash card fine, so that should work well as an eventual boot media. Until then, I&rsquo;ll probably have to TFTP boot from one of the 8 gig network ports available in this pre-boot environment :&ndash;)</p>
+
+<p>Next step: the hard parts! Creating a bootable disk image that u-boot can understand, and a usable *nix system root partition to live in.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SDK Troubles]]></title>
+    <link href="http://clockfort.github.io/blog/2013/08/11/sdk-troubles/"/>
+    <updated>2013-08-11T22:50:00-07:00</updated>
+    <id>http://clockfort.github.io/blog/2013/08/11/sdk-troubles</id>
+    <content type="html"><![CDATA[<p>Cavium apparently requires you to buy an expensive hardware development kit in order to get access to their SDK, which provides a simulator / base linux image / compiler for their platform. Bummer. After a while of digging though, a helpful wiki page from the FreeBSD MIPS team indicated that one may also petition to join a fairly closed-door community called <a href="http://cnusers.org/">cnUsers</a>, where approved members are allowed access to a pretty crippled occasionally released copy of the Cavium SDK. However, it does not offer advanced crypto/compression library support, and more importantly does not include the simulator/base linux image. 😢</p>
+
+<p>Regardless, I have applied, and eagerly await evaluating what help, if any, the open source SDK will be in any porting efforts.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hacking a Lanner MR-950]]></title>
+    <link href="http://clockfort.github.io/blog/2013/08/11/hacking-a-lanner-mr-950/"/>
+    <updated>2013-08-11T11:36:00-07:00</updated>
+    <id>http://clockfort.github.io/blog/2013/08/11/hacking-a-lanner-mr-950</id>
+    <content type="html"><![CDATA[<p>I recently bought a Lanner MR-950 &ldquo;Octeon Powered Security Appliance&rdquo; for super-cheaps off of ebay. It&rsquo;s a 16-core MIPS64 SoC with 10x 1-gig copper ports, DDR2 modules, dual redundant PSUs, etc.  (<a href="http://www.quantum.com.pl/baza/pdf/5f0ca0cc39ca9a492838d80453fc034ba5936ba3.pdf">Basic Datasheet</a>)</p>
+
+<p>After consulting some chipset documentation to see what was supported, I also bought from eBay to populate the board 2x2GB DDR2-667 PC2-5300 ECC Registered DIMMs, and a 16GB compact flash card from someone on ebay kind enough to list read/write IOPS for their products :&ndash;)</p>
+
+<p>Some excited pictures from receiving the item!
+<img class="center" src="//blog.clockfort.com/images/posts/lanner_mr950.jpg" title="Lanner MR-950 on my couch" >
+<img class="center" src="//blog.clockfort.com/images/posts/lanner_mr950_guts.jpg" title="Lanner MR-950&rsquo;s guts" ></p>
+
+<p>&hellip; the dent in the LED panel above isn&rsquo;t an artifact of my wide-angle camera lens, this little guy has seen some action. With that done, now onto making him boot Linux.</p>
+
+<p>I have some friends who work for / own a company that makes a neat custom <a href="https://www.exablox.com/products/">NAS solution on top of Cavium Octeon II SoCs</a>, and I happen to know that their boxes default to 115200bps serial for debugging, rather than the relatively industry-standard 9600/8/n/1. Sure enough, after this informed lucky guess on serial settings, after turning the box on (and finding the switch to turn off an ear-piercing alarm that I somehow triggered by booting the box), text started streaming in over my janky USB→DB9 Serial→Cisco rollover→RJ45→RJ45/DB9 console adapter setup.</p>
+
+<p>``` text
+\0x00</p>
+
+<p>U-Boot 1.1.1 (Development build) (Build time: Mar 15 2007
+ &ndash; 03:44:07)</p>
+
+<p>WARNING:
+WARNING: Measured DDR clock mismatch! expected: 266 MHz, measured: 196 MHz, cpu clock: 499 MHz
+WARNING: Using measured clock for configuration.
+WARNING:</p>
+
+<p>Warning: Clock descriptor tuple not found in eeprom, using defaults</p>
+
+<p>WARNING: memory configured for 196 mhz clock.<br/>
+If this is not the actual memory clock
+poor performance and memory instability may result.<br/>
+The memory speed must be specified in the board eeprom</p>
+
+<p>Warning: Board descriptor tuple not found in eeprom, using defaults
+EBT3000 board revision major:1, minor:0, serial #: unknown
+OCTEON CN38XX-NSP revision: 3(pass 4), Core clock: 499 MHz, DDR clock: 196 MHz (392 Mhz data rate)</p>
+
+<p>Unsupported SDRAM Width, 4.  Must be 8 or 16.
+hanging&hellip;</p>
+
+<h1>#</h1>
+
+<h1>ERROR ### Please RESET the board</h1>
+
+<p>~\0x00</p>
+
+<p>```</p>
+
+<p>Darn. I unfortunately understand this message, and it means I need to both:</p>
+
+<ul>
+<li>Somehow find and buy 240pin DDR2 DIMMs that are registered, ECC, 2GB or less, AND meet the new apparent requirement of also being &ldquo;low density&rdquo; (aka having a larger number of low-density chips rather than high-density ones, which will be accessed over a large data width). This will probably be difficult to find.</li>
+<li>Either buy slower RAM (I don&rsquo;t want to do that!) or figure out how the ram speed is stored/encoded in the EEPROM and change it.</li>
+</ul>
+
+
+<p>Whelp. At least old DDR2 server ram is very cheap used, albeit it will be very difficult to find the particular combination of features I need (used RAM sellers aren&rsquo;t usually forthcoming about the exact chip configuration of their DIMMs&hellip;).</p>
+
+<p>Stay tuned! I&rsquo;ll be back in around a week and a half, hopefully with much better news, after receiving some new RAM.</p>
+]]></content>
+  </entry>
+  
+</feed>
