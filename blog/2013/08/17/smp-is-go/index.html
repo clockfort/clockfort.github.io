@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>SDK Troubles - Clockfort's Tech Blog</title>
+  <title>SMP is Go - Clockfort's Tech Blog</title>
   <meta name="author" content="Chris Lockfort">
 
   
-  <meta name="description" content="Cavium apparently requires you to buy an expensive hardware development kit in order to get access to their SDK, which provides a simulator / base &hellip;">
+  <meta name="description" content="After mucking around with the RCU for a while, I realized what I actually wanted to do was to less-than-obvious thing of passing the argument &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://clockfort.github.io/blog/2013/08/11/sdk-troubles">
+  <link rel="canonical" href="http://clockfort.github.io/blog/2013/08/17/smp-is-go">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Clockfort's Tech Blog" type="application/atom+xml">
@@ -80,7 +80,7 @@
   
   <header>
     
-      <h1 class="entry-title">SDK Troubles</h1>
+      <h1 class="entry-title">SMP Is Go</h1>
     
     
       <p class="meta">
@@ -96,7 +96,7 @@
   
 
 
-<time datetime="2013-08-11T22:50:00-07:00" pubdate data-updated="true">Aug 11<span>th</span>, 2013</time>
+<time datetime="2013-08-17T02:24:00-07:00" pubdate data-updated="true">Aug 17<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -105,9 +105,71 @@
   </header>
 
 
-<div class="entry-content"><p>Cavium apparently requires you to buy an expensive hardware development kit in order to get access to their SDK, which provides a simulator / base linux image / compiler for their platform. Bummer. After a while of digging though, a helpful wiki page from the FreeBSD MIPS team indicated that one may also petition to join a fairly closed-door community called <a href="http://cnusers.org/">cnUsers</a>, where approved members are allowed access to a pretty crippled occasionally released copy of the Cavium SDK. However, it does not offer advanced crypto/compression library support, and more importantly does not include the simulator/base linux image. 😢</p>
+<div class="entry-content"><p>After mucking around with the RCU for a while, I realized what I actually wanted to do was to less-than-obvious thing of passing the argument <code>coremask=ffff</code> to the kernel</p>
 
-<p>Regardless, I have applied, and eagerly await evaluating what help, if any, the open source SDK will be in any porting efforts.</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[  153.005742] SMP: Booting CPU01 (CoreId  1)...
+</span><span class='line'>[  153.009971] CPU revision is: 000d0003 (Cavium Octeon)
+</span><span class='line'>[  153.010814] SMP: Booting CPU02 (CoreId  2)...
+</span><span class='line'>[  153.020071] CPU revision is: 000d0003 (Cavium Octeon)
+</span><span class='line'>[  153.020784] SMP: Booting CPU03 (CoreId  3)...
+</span><span class='line'>[  153.030041] CPU revision is: 000d0003 (Cavium Octeon)
+</span><span class='line'>[  153.030761] SMP: Booting CPU04 (CoreId  4)...
+</span><span class='line'>[  153.040018] CPU revision is: 000d0003 (Cavium Octeon)
+</span><span class='line'>[  153.040745] SMP: Booting CPU05 (CoreId  5)...
+</span><span class='line'>[  153.050002] CPU revision is: 000d0003 (Cavium Octeon)
+</span><span class='line'>[  153.050726] SMP: Booting CPU06 (CoreId  6)...
+</span><span class='line'>[  153.059984] CPU revision is: 000d0003 (Cavium Octeon)
+</span><span class='line'>[  153.060699] SMP: Booting CPU07 (CoreId  7)...
+</span><span class='line'>[  153.069956] CPU revision is: 000d0003 (Cavium Octeon)
+</span><span class='line'>[  153.070687] SMP: Booting CPU08 (CoreId  8)...
+</span><span class='line'>[  153.079944] CPU revision is: 000d0003 (Cavium Octeon)
+</span><span class='line'>[  153.080676] SMP: Booting CPU09 (CoreId  9)...
+</span><span class='line'>[  153.089933] CPU revision is: 000d0003 (Cavium Octeon)
+</span><span class='line'>[  153.090672] SMP: Booting CPU10 (CoreId 10)...
+</span><span class='line'>[  153.099929] CPU revision is: 000d0003 (Cavium Octeon)
+</span><span class='line'>[  153.100657] SMP: Booting CPU11 (CoreId 11)...
+</span><span class='line'>[  153.109914] CPU revision is: 000d0003 (Cavium Octeon)
+</span><span class='line'>[  153.110662] SMP: Booting CPU12 (CoreId 12)...
+</span><span class='line'>[  153.119919] CPU revision is: 000d0003 (Cavium Octeon)
+</span><span class='line'>[  153.120661] SMP: Booting CPU13 (CoreId 13)...
+</span><span class='line'>[  153.129918] CPU revision is: 000d0003 (Cavium Octeon)
+</span><span class='line'>[  153.130649] SMP: Booting CPU14 (CoreId 14)...
+</span><span class='line'>[  153.139906] CPU revision is: 000d0003 (Cavium Octeon)
+</span><span class='line'>[  153.140638] SMP: Booting CPU15 (CoreId 15)...
+</span><span class='line'>[  153.149895] CPU revision is: 000d0003 (Cavium Octeon)
+</span><span class='line'>[  153.150180] Brought up 16 CPUs</span></code></pre></td></tr></table></div></figure>
+
 </div>
 
 
@@ -130,12 +192,12 @@
   
 
 
-<time datetime="2013-08-11T22:50:00-07:00" pubdate data-updated="true">Aug 11<span>th</span>, 2013</time>
+<time datetime="2013-08-17T02:24:00-07:00" pubdate data-updated="true">Aug 17<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/hacking/'>hacking</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/porting/'>porting</a>
+    <a class='category' href='/blog/categories/linux/'>Linux</a>, <a class='category' href='/blog/categories/hacking/'>hacking</a>, <a class='category' href='/blog/categories/hardware/'>hardware</a>
   
 </span>
 
@@ -144,7 +206,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://clockfort.github.io/blog/2013/08/11/sdk-troubles/" data-via="clockfort" data-counturl="http://clockfort.github.io/blog/2013/08/11/sdk-troubles/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://clockfort.github.io/blog/2013/08/17/smp-is-go/" data-via="clockfort" data-counturl="http://clockfort.github.io/blog/2013/08/17/smp-is-go/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -155,10 +217,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/08/11/hacking-a-lanner-mr-950/" title="Previous Post: Hacking a Lanner MR-950">&laquo; Hacking a Lanner MR-950</a>
+        <a class="basic-alignment left" href="/blog/2013/08/16/making-a-custom-linux-build/" title="Previous Post: Making a Custom Linux Build">&laquo; Making a Custom Linux Build</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/08/13/ram-success/" title="Next Post: Ram Success!">Ram Success! &raquo;</a>
       
     </p>
   </footer>
@@ -262,8 +322,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://clockfort.github.io/blog/2013/08/11/sdk-troubles/';
-        var disqus_url = 'http://clockfort.github.io/blog/2013/08/11/sdk-troubles/';
+        var disqus_identifier = 'http://clockfort.github.io/blog/2013/08/17/smp-is-go/';
+        var disqus_url = 'http://clockfort.github.io/blog/2013/08/17/smp-is-go/';
         var disqus_script = 'embed.js';
       
     (function () {

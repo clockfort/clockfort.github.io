@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Clockfort's Tech Blog]]></title>
   <link href="http://clockfort.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://clockfort.github.io/"/>
-  <updated>2013-08-17T01:26:09-07:00</updated>
+  <updated>2013-08-17T02:27:22-07:00</updated>
   <id>http://clockfort.github.io/</id>
   <author>
     <name><![CDATA[Chris Lockfort]]></name>
@@ -12,6 +12,49 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SMP is Go]]></title>
+    <link href="http://clockfort.github.io/blog/2013/08/17/smp-is-go/"/>
+    <updated>2013-08-17T02:24:00-07:00</updated>
+    <id>http://clockfort.github.io/blog/2013/08/17/smp-is-go</id>
+    <content type="html"><![CDATA[<p>After mucking around with the RCU for a while, I realized what I actually wanted to do was to less-than-obvious thing of passing the argument <code>coremask=ffff</code> to the kernel</p>
+
+<p><code>
+[  153.005742] SMP: Booting CPU01 (CoreId  1)...
+[  153.009971] CPU revision is: 000d0003 (Cavium Octeon)
+[  153.010814] SMP: Booting CPU02 (CoreId  2)...
+[  153.020071] CPU revision is: 000d0003 (Cavium Octeon)
+[  153.020784] SMP: Booting CPU03 (CoreId  3)...
+[  153.030041] CPU revision is: 000d0003 (Cavium Octeon)
+[  153.030761] SMP: Booting CPU04 (CoreId  4)...
+[  153.040018] CPU revision is: 000d0003 (Cavium Octeon)
+[  153.040745] SMP: Booting CPU05 (CoreId  5)...
+[  153.050002] CPU revision is: 000d0003 (Cavium Octeon)
+[  153.050726] SMP: Booting CPU06 (CoreId  6)...
+[  153.059984] CPU revision is: 000d0003 (Cavium Octeon)
+[  153.060699] SMP: Booting CPU07 (CoreId  7)...
+[  153.069956] CPU revision is: 000d0003 (Cavium Octeon)
+[  153.070687] SMP: Booting CPU08 (CoreId  8)...
+[  153.079944] CPU revision is: 000d0003 (Cavium Octeon)
+[  153.080676] SMP: Booting CPU09 (CoreId  9)...
+[  153.089933] CPU revision is: 000d0003 (Cavium Octeon)
+[  153.090672] SMP: Booting CPU10 (CoreId 10)...
+[  153.099929] CPU revision is: 000d0003 (Cavium Octeon)
+[  153.100657] SMP: Booting CPU11 (CoreId 11)...
+[  153.109914] CPU revision is: 000d0003 (Cavium Octeon)
+[  153.110662] SMP: Booting CPU12 (CoreId 12)...
+[  153.119919] CPU revision is: 000d0003 (Cavium Octeon)
+[  153.120661] SMP: Booting CPU13 (CoreId 13)...
+[  153.129918] CPU revision is: 000d0003 (Cavium Octeon)
+[  153.130649] SMP: Booting CPU14 (CoreId 14)...
+[  153.139906] CPU revision is: 000d0003 (Cavium Octeon)
+[  153.140638] SMP: Booting CPU15 (CoreId 15)...
+[  153.149895] CPU revision is: 000d0003 (Cavium Octeon)
+[  153.150180] Brought up 16 CPUs
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Making a Custom Linux Build]]></title>
