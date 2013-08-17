@@ -81,4 +81,4 @@ Good news is, though, the PCI bus works perfectly, and it even loaded a network 
 
 Bad news is, besides the kernel oops from the USB implementation, is that while all 16 CPUs were detected properly (unlike OpenBSD), the heirarchical RCU (currently the default) I configured forced NUM_CPUS back down to 1 from 16. Oh well, easy enough to switch it to classic.
 
-Anyways, we were running Linux on this Cavium Octeon based Lanner MR-950 for an entire 356 milliseconds, so I'd call that a win.
+Anyways, we were running Linux on this Cavium Octeon based Lanner MR-950 for an entire 356 milliseconds, so I'd call that a win. (It kernel panic'd right after that oops because I haven't figured out how to get the kernel to see either a secondary-memory-loaded ramdisk or the root partition on the CF card as its root)
