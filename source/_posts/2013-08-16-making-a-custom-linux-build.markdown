@@ -11,12 +11,19 @@ I'm borrowing the OpenWRT project's surprisingly easy to use cross-compilation t
 There are a lot of pains about this - kernel config is a little weird for this platform, and I found a few places that won't work (or even compile) for MIPS/Octeon platform. The kernel itself is easy, though, compared to building out a good-sized userspace for this platform. Some applications have x86/ARM/etc specific code and can't compile for MIPS; some applications have bad building dependency graphs and can't be built in parallel; other applications would work fine on MIPS, and compile reliably in parallel, but their trunk builds are currently broken for one reason or another. Or others use outdated kernel interfaces and can't build against 3.10 kernels.
 
 So, as a result, the build process is:
+
 * Do kernel config, select packages to build, add in a few extras that I'll need that aren't tracked by OpenWRT
+
 * Start building
+
 * Stop on an error
+
 * Fix error if it's a package I need, or toss out the application if it's a feature that is more of a "would-be-nice" than a "must-have"
+
 * Start building again with insane verbosity options enabled
+
 * Stop on an error... (repeat for hours and hours)
+
 
 Pro-tip: There are an absurd number of wireless kernel modules that don't compile/work on MIPS64. x86 binary firmware blobs are stupid.
 
