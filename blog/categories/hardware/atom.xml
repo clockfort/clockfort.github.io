@@ -4,7 +4,7 @@
   <title><![CDATA[Category: hardware | Clockfort's Tech Blog]]></title>
   <link href="http://clockfort.github.io/blog/categories/hardware/atom.xml" rel="self"/>
   <link href="http://clockfort.github.io/"/>
-  <updated>2013-08-17T02:27:22-07:00</updated>
+  <updated>2013-08-17T03:00:14-07:00</updated>
   <id>http://clockfort.github.io/</id>
   <author>
     <name><![CDATA[Chris Lockfort]]></name>
@@ -137,7 +137,7 @@ Good news is, though, the PCI bus works perfectly, and it even loaded a network 
 
 <p>Bad news is, besides the kernel oops from the USB implementation, is that while all 16 CPUs were detected properly (unlike OpenBSD), the heirarchical RCU (currently the default) I configured forced NUM_CPUS back down to 1 from 16. Oh well, easy enough to switch it to classic.</p>
 
-<p>Anyways, we were running Linux on this Cavium Octeon based Lanner MR-950 for an entire 356 milliseconds, so I&rsquo;d call that a win.</p>
+<p>Anyways, we were running Linux on this Cavium Octeon based Lanner MR-950 for an entire 356 milliseconds, so I&rsquo;d call that a win. (It kernel panic&rsquo;d right after that oops because I haven&rsquo;t figured out how to get the kernel to see either a secondary-memory-loaded ramdisk or the root partition on the CF card as its root)</p>
 ]]></content>
   </entry>
   
