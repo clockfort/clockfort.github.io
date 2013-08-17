@@ -4,7 +4,7 @@
   <title><![CDATA[Category: hacking | Clockfort's Tech Blog]]></title>
   <link href="http://clockfort.github.io/blog/categories/hacking/atom.xml" rel="self"/>
   <link href="http://clockfort.github.io/"/>
-  <updated>2013-08-17T01:18:54-07:00</updated>
+  <updated>2013-08-17T01:26:09-07:00</updated>
   <id>http://clockfort.github.io/</id>
   <author>
     <name><![CDATA[Chris Lockfort]]></name>
@@ -25,12 +25,12 @@
 <p>So, as a result, the build process is:</p>
 
 <ul>
-<li><p>Do kernel config, select packages to build, add in a few extras that I&rsquo;ll need that aren&rsquo;t tracked by OpenWRT</p></li>
-<li><p>Start building</p></li>
-<li><p>Stop on an error</p></li>
-<li><p>Fix error if it&rsquo;s a package I need, or toss out the application if it&rsquo;s a feature that is more of a &ldquo;would-be-nice&rdquo; than a &ldquo;must-have&rdquo;</p></li>
-<li><p>Start building again with insane verbosity options enabled</p></li>
-<li><p>Stop on an error&hellip; (repeat for hours and hours)</p></li>
+<li>Do kernel config, select packages to build, add in a few extras that I&rsquo;ll need that aren&rsquo;t tracked by OpenWRT</li>
+<li>Start building</li>
+<li>Stop on an error</li>
+<li>Fix error if it&rsquo;s a package I need, or toss out the application if it&rsquo;s a feature that is more of a &ldquo;would-be-nice&rdquo; than a &ldquo;must-have&rdquo;</li>
+<li>Start building again with insane verbosity options enabled</li>
+<li>Stop on an error&hellip; (repeat for hours and hours)</li>
 </ul>
 
 
