@@ -109,13 +109,17 @@
 
 <p>There are a lot of pains about this &ndash; kernel config is a little weird for this platform, and I found a few places that won&rsquo;t work (or even compile) for MIPS/Octeon platform. The kernel itself is easy, though, compared to building out a good-sized userspace for this platform. Some applications have x86/ARM/etc specific code and can&rsquo;t compile for MIPS; some applications have bad building dependency graphs and can&rsquo;t be built in parallel; other applications would work fine on MIPS, and compile reliably in parallel, but their trunk builds are currently broken for one reason or another. Or others use outdated kernel interfaces and can&rsquo;t build against 3.10 kernels.</p>
 
-<p>So, as a result, the build process is:
-* Do kernel config, select packages to build, add in a few extras that I&rsquo;ll need that aren&rsquo;t tracked by OpenWRT
-* Start building
-* Stop on an error
-* Fix error if it&rsquo;s a package I need, or toss out the application if it&rsquo;s a feature that is more of a &ldquo;would-be-nice&rdquo; than a &ldquo;must-have&rdquo;
-* Start building again with insane verbosity options enabled
-* Stop on an error&hellip; (repeat for hours and hours)</p>
+<p>So, as a result, the build process is:</p>
+
+<ul>
+<li><p>Do kernel config, select packages to build, add in a few extras that I&rsquo;ll need that aren&rsquo;t tracked by OpenWRT</p></li>
+<li><p>Start building</p></li>
+<li><p>Stop on an error</p></li>
+<li><p>Fix error if it&rsquo;s a package I need, or toss out the application if it&rsquo;s a feature that is more of a &ldquo;would-be-nice&rdquo; than a &ldquo;must-have&rdquo;</p></li>
+<li><p>Start building again with insane verbosity options enabled</p></li>
+<li><p>Stop on an error&hellip; (repeat for hours and hours)</p></li>
+</ul>
+
 
 <p>Pro-tip: There are an absurd number of wireless kernel modules that don&rsquo;t compile/work on MIPS64. x86 binary firmware blobs are stupid.</p>
 
