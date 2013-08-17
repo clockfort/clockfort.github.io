@@ -1,0 +1,9 @@
+---
+layout: post
+title: "New blog!"
+date: 2013-08-11 11:00
+comments: true
+categories: 
+---
+
+I may eventually port some posts over from the old site. Eventually. It may end up being too much busy work.
