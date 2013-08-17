@@ -13,15 +13,10 @@ There are a lot of pains about this - kernel config is a little weird for this p
 So, as a result, the build process is:
 
 * Do kernel config, select packages to build, add in a few extras that I'll need that aren't tracked by OpenWRT
-
 * Start building
-
 * Stop on an error
-
 * Fix error if it's a package I need, or toss out the application if it's a feature that is more of a "would-be-nice" than a "must-have"
-
 * Start building again with insane verbosity options enabled
-
 * Stop on an error... (repeat for hours and hours)
 
 
